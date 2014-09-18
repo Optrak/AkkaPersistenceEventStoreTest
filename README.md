@@ -2,7 +2,8 @@ AkkaPersistenceEventStoreTest
 =============================
 
 Test project to illustrate how PersistentActor fails when using EventStore.Akka.Persistence
-It has two tests: the first one (succeeds) serializes a manually constructed event with akka serialization and puts it into EventStore, then reads it and deserializes back. The second test involves a PersistentActor, and it fails every time the actor gets a message with 
+
+It has two tests: the first one serializes a manually constructed event with akka serialization and puts it into EventStore, then reads it and deserializes back successfully. The second test involves a PersistentActor, and it fails every time the actor gets a message with 
 
     java.lang.AbstractMethodError: akka.persistence.eventstore.journal.EventStoreJournal.preparePersistentBatch(Lscal/collection/immutable/Seq;)Lscala/collection/immutable/Seq;
         at akka.persistence.journal.AsyncWriteJournal$$anonfun$receive$1.applyOrElse(AsyncWriteJournal.scala:37)
@@ -19,3 +20,5 @@ It has two tests: the first one (succeeds) serializes a manually constructed eve
         at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
         
 but succeeds when levelDB is used for journaling.
+eventstore.sh is a script for running eventstore-3.0.0, 
+eventstore2.sh is for eventstore 2.0.0.
