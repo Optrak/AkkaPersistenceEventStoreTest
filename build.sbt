@@ -25,8 +25,8 @@ libraryDependencies ++= {
       "joda-time" % "joda-time" % "2.4",
       "org.joda" % "joda-convert" % "1.7",
       "com.typesafe.akka" %% "akka-persistence-experimental" % "2.3.6", //2.4-SNAPSHOT is only for scala 2.10
-      "com.geteventstore" %% "akka-persistence-eventstore" % "0.0.2",
-      "com.geteventstore" %% "eventstore-client" % "0.5.0",
+      "com.geteventstore" %% "akka-persistence-eventstore" % "1.0.0",
+      "com.geteventstore" %% "eventstore-client" % "1.0.0",
       "org.json4s" %% "json4s-native" % "3.2.10",
       "org.specs2" %% "specs2" % "2.3.12" % "test"
     )
