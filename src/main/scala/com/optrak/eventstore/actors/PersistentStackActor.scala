@@ -7,6 +7,7 @@ import org.joda.time._
 sealed trait StackCommand
   case class PushItem(item: String) extends StackCommand
   case object PrintState extends StackCommand
+  case object GetState extends StackCommand
 
 case class ItemPushed(
     val item: String,
@@ -14,7 +15,8 @@ case class ItemPushed(
 )
 
 class PersistentStackActor extends PersistentActor {
-  override def persistenceId = "sample-id-1"
+  //otherwise the received commands accumulate in the same stream across the separate test runs
+  override def persistenceId = PersistentStackActor.persistenceId
 
   var state: List[String] = Nil
 
@@ -30,6 +32,11 @@ class PersistentStackActor extends PersistentActor {
     case PushItem(item) =>
       persist(ItemPushed(item, DateTime.now))(updateState)
     case PrintState => System.out.println(state)
+    case GetState => sender ! state
   }
  
+}
+
+object PersistentStackActor {
+  val persistenceId = "PersistentActor-" + DateTime.now.toString
 }

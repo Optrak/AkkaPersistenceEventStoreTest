@@ -8,6 +8,8 @@ import org.specs2.mutable._
 import org.specs2.time.NoTimeConversions
 import akka.actor.{ ActorSystem, Props, Actor }
 import akka.serialization._
+import akka.pattern.ask
+import akka.util.Timeout
 import eventstore._
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
@@ -33,7 +35,6 @@ object EventStoreTest extends Specification with LazyLogging with NoTimeConversi
       val stream = EventStream.Id("TestStream")
 
       val event = EventData("ItemPushed", data = Content(ByteString(bytes), ContentType.Json))
-
       val futureEvent = for {
         dummy <- connection.future(WriteEvents(stream, List(event)))
         //reading should happen after writing, otherwise the wrong event may be read
@@ -51,14 +52,15 @@ object EventStoreTest extends Specification with LazyLogging with NoTimeConversi
   }
 
   "Persistent Actor" should {
-    /*"work with EventStore" in {
+    "work with EventStore" in {
       val actor = system.actorOf(Props[PersistentStackActor], "PersistentStack")
       actor ! PushItem("!")
       actor ! PushItem("world")
       actor ! Restart
-      actor ! PrintState
-      1 must_== 1
-    }*/
+      implicit val timeout = Timeout(5 seconds)
+      val futureState = actor ? GetState
+      Await.result(futureState, 2 seconds) must_== List("world", "!")
+    }
   }
 
 }
